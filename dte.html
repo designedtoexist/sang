@@ -32,14 +32,17 @@
 </header>
 
 <section class="offer rv" aria-label="What DTE does">
-<div class="card"><p class="k">01</p><h3>Digital portfolios</h3><p>Creative, personal websites that present your work and story with a distinct look.</p></div>
-<div class="card"><p class="k">02</p><h3>GitHub profile design</h3><p>Polished profile READMEs and presentation that make your code easier to notice.</p></div>
-<div class="card"><p class="k">03</p><h3>Live and shipped</h3><p>Four sites designed and deployed so far, each open to explore below.</p></div>
+<div class="card"><p class="k">01</p><h3>Digital portfolios</h3><p>Creative, personal websites that present work and story with a distinct look.</p></div>
+<div class="card"><p class="k">02</p><h3>GitHub profile design</h3><p>Polished profile presentation that makes code easier to notice.</p></div>
+<div class="card"><p class="k">03</p><h3>Live and shipped</h3><p>Four sites designed and deployed, each one open to explore below.</p></div>
 </section>
 
+<div class="mq rv" aria-hidden="true"><div><span>Marlo Reyes</span><span>The Night Market of Lost Things</span><span>Museum of Small Weather</span><span>Morrow &amp; Moss</span><span>Marlo Reyes</span><span>The Night Market of Lost Things</span><span>Museum of Small Weather</span><span>Morrow &amp; Moss</span></div></div>
+
 <main id="work">
+<p class="k rv">The work</p>
 <h2 class="rv">Websites designed so far</h2>
-<p class="sub rv">Four live sites. Open any of them to see the real thing.</p>
+<p class="sub rv">Four live sites, each with its own world. Hover a preview, then open the real thing.</p>
 <div class="grid" id="sites"></div>
 </main>
 
@@ -57,17 +60,18 @@
 
 <script>
 const SITES=[
- ['Designed to Exist','https://designed-to-exist.netlify.app/','Studio site'],
- ['Night Market','https://night-market-dte.vercel.app/','Website'],
- ['Small Weather','https://small-weather-mu.vercel.app/','Website'],
- ['Morrow & Moss','https://morrow-and-moss.netlify.app/','Website']
+ {n:'Marlo Reyes',u:'https://designed-to-exist.netlify.app/',t:'Illustrator portfolio',d:'A scroll-to-dive portfolio for an illustrator and 2D animator. The page sinks from sunlit water into the deep as you read, with sound on.',g:['Portfolio','Scroll story','Sound'],c:'#2d6a8f'},
+ {n:'The Night Market of Lost Things',u:'https://night-market-dte.vercel.app/',t:'Interactive experience',d:'Walk a night market with scroll or W and S, and visit stalls that sell things you never knew you could lose. You pay in memories.',g:['Interactive','Walk-through','Sound'],c:'#b4527a'},
+ {n:'Museum of Small Weather',u:'https://small-weather-mu.vercel.app/',t:'Playful web museum',d:'Real weather kept in glass jars. Shake them, wipe the fog off the glass, and bottle your own storm with live dials.',g:['Interactive','Playful','Sound'],c:'#4d86b8'},
+ {n:'Morrow & Moss',u:'https://morrow-and-moss.netlify.app/',t:'Botanical studio site',d:'A calm studio website for botanical design: a rotating archive, services, a journal and a quiet, handmade feel.',g:['Studio site','Archive','Journal'],c:'#7c9a6a'}
 ];
 const g=document.getElementById('sites');
-g.innerHTML=SITES.map((s,i)=>`<article class="site rv"><div class="bw"><div class="br"><i></i><i></i><i></i><u>${s[1].replace(/^https?:\/\//,'')}</u></div><div class="vp"><b>${s[0]}</b><iframe title="${s[0]} preview" tabindex="-1" data-src="${s[1]}" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin"></iframe></div></div><div class="meta"><div><small>${String(i+1).padStart(2,'0')} · ${s[2]}</small><h3>${s[0]}</h3></div><a href="${s[1]}" target="_blank" rel="noopener">Open live site ↗</a></div></article>`).join('');
+g.innerHTML=SITES.map((s,i)=>`<article class="site rv" style="--c:${s.c}"><a class="bw" href="${s.u}" target="_blank" rel="noopener" aria-label="Open ${s.n}"><div class="br"><i></i><i></i><i></i><u>${s.u.replace(/^https?:\/\//,'').replace(/\/$/,'')}</u></div><div class="vp"><b>${s.n}</b><iframe title="${s.n} preview" tabindex="-1" data-src="${s.u}" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin"></iframe><span class="ov">Open live site ↗</span></div></a><div class="meta"><small>${String(i+1).padStart(2,'0')} · ${s.t}</small><h3>${s.n}</h3><p>${s.d}</p><div class="tags">${s.g.map(x=>`<span>${x}</span>`).join('')}</div></div></article>`).join('');
 const fit=()=>document.querySelectorAll('.vp iframe').forEach(f=>{const v=f.parentNode,sc=v.clientWidth/1280;f.style.width='1280px';f.style.height=v.clientHeight/sc+'px';f.style.transform=`scale(${sc})`});
 fit();addEventListener('resize',fit);
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add('on');const f=e.target.querySelector('iframe');if(f&&!f.src){f.onload=()=>f.classList.add('ok');f.src=f.dataset.src}io.unobserve(e.target)}),{threshold:.12});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+if(matchMedia('(hover:hover) and (prefers-reduced-motion:no-preference)').matches)document.querySelectorAll('.site').forEach(s=>{const b=s.querySelector('.bw');s.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;b.style.transform=`perspective(900px) rotateY(${x*9}deg) rotateX(${-y*7}deg) translateY(-6px)`;b.style.setProperty('--mx',(x+.5)*100+'%');b.style.setProperty('--my',(y+.5)*100+'%')});s.addEventListener('pointerleave',()=>{b.style.transform=''})});
 </script>
 </body>
 </html>
