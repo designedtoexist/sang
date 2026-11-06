@@ -148,7 +148,7 @@ addEventListener('pointerdown',e=>{if(!go)return;addDrop(e.clientX,e.clientY,64+
 const size=()=>{R.setSize(innerWidth,innerHeight);RT.setSize(innerWidth*PXR,innerHeight*PXR);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()};size();addEventListener('resize',size);
 let mx=0,my=0,s=0,intro=0,go=false,cur=-1,swapT,tgt=0,cs=0;
 let RSP=null;try{const v=sessionStorage.getItem('pf_pos'),nt=(performance.getEntriesByType('navigation')[0]||{}).type;if(v!==null&&(location.hash=='#resume'||nt=='back_forward'))RSP=Math.min(1,Math.max(0,+v||0));if(location.hash=='#resume')history.replaceState(null,'',location.pathname+location.search)}catch(e){}
-window.__rsp=RSP;window.__rsf=()=>{if(RSP!=null){tgt=cs=RSP*H();scrollTo(0,cs)}};window.__rsf();
+if(RSP!=null)s=RSP;window.__rsp=RSP;window.__rsf=()=>{if(RSP!=null){tgt=cs=RSP*H();scrollTo(0,cs)}};window.__rsf();
 addEventListener('pagehide',()=>{try{sessionStorage.setItem('pf_pos',(scrollY/Math.max(1,H())).toFixed(4))}catch(e){}});
 addEventListener('wheel',e=>{if(!go||$('pn').classList.contains('on'))return;e.preventDefault();tgt=Math.min(H(),Math.max(0,tgt+(e.deltaMode==1?e.deltaY*16:e.deltaY)*.35))},{passive:false});
 addEventListener('scroll',()=>{if(Math.abs(scrollY-cs)>3){cs=tgt=scrollY}});
